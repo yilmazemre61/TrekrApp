@@ -8,17 +8,58 @@
 import SwiftUI
 
 struct ContentView: View {
+    let location: Location
+    @StateObject var locations = Locations()
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        TabView{
+            NavigationStack{
+                ScrollView {
+                    Image(location.heroPicture)
+                        .resizable()
+                        .scaledToFit()
+                    
+                    Text(location.name)
+                        .font(.title)
+                        .bold()
+                        .multilineTextAlignment(.center)
+                    
+                    Text(location.country)
+                        .font(.title)
+                        .foregroundColor(.secondary)
+                    
+                    Text(location.description)
+                        .padding(.horizontal)
+                    
+                    Text("Did you know?")
+                        .font(.title3)
+                        .bold()
+                        .padding(.top)
+                    
+                    Text(location.more)
+                        .padding(.horizontal)
+                    
+                }
+                .navigationTitle("Discover")
+            }
+            .tabItem {
+                Image(systemName: "airplane.circle.fill")
+                Text("Discover")
+            }
+            NavigationStack{
+                WorldView()
+            }
+            .tabItem {
+                Image(systemName: "location.circle")
+                Text("Locations")
+            }
         }
-        .padding()
+        .environmentObject(locations)
     }
+    
+    
 }
 
 #Preview {
-    ContentView()
+    ContentView(location: Locations().primary)
 }
+
